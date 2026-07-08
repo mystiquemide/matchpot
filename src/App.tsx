@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import QRCode from 'qrcode'
-import { Check, Copy, Shield, Ticket, Users, Wallet, Zap } from 'lucide-react'
+import { Copy, Shield, Ticket, Users, Wallet } from 'lucide-react'
 import './App.css'
 import { buildUsdtPaymentUri, createLocalWdkSession, type WdkSession } from './wdk'
 
@@ -66,152 +66,190 @@ function App() {
   )
 
   useEffect(() => {
-    QRCode.toDataURL(paymentUri, { margin: 1, width: 220, color: { dark: '#08110d', light: '#f7fff9' } }).then(setQr)
+    QRCode.toDataURL(paymentUri, { margin: 1, width: 212, color: { dark: '#111111', light: '#ffffff' } }).then(setQr)
   }, [paymentUri])
 
   function togglePaid(index: number) {
-    setParticipants((current) =>
-      current.map((p, i) => (i === index ? { ...p, paid: !p.paid } : p)),
-    )
+    setParticipants((current) => current.map((p, i) => (i === index ? { ...p, paid: !p.paid } : p)))
   }
 
   async function copyRequest() {
     await navigator.clipboard.writeText(paymentUri)
     setCopied(true)
-    window.setTimeout(() => setCopied(false), 1500)
+    window.setTimeout(() => setCopied(false), 1400)
   }
 
   return (
     <main>
-      <header className="topbar">
-        <div className="brandMark">MP</div>
-        <div>
-          <strong>MatchPot</strong>
-          <span>WDK powered USDT settlement</span>
+      <nav className="nav">
+        <a className="logo" href="#top" aria-label="MatchPot home">
+          <span>MatchPot</span>
+        </a>
+        <div className="navLinks">
+          <a href="#how">How it works</a>
+          <a href="#pot">Try flow</a>
+          <a href="https://github.com/mystiquemide/matchpot" target="_blank">GitHub</a>
         </div>
-        <a href="https://github.com/mystiquemide/matchpot" target="_blank">GitHub</a>
-      </header>
+      </nav>
 
-      <section className="hero">
-        <div className="eyebrow">Football fan payments, settled cleanly</div>
-        <h1>Split the match night. Settle in USDT.</h1>
-        <p className="lede">
-          MatchPot creates a shared pot for watch parties, team dues, ticket bundles,
-          transport and merch. Fans get clear USDT payment requests. Organisers get a clean settlement board.
-        </p>
-        <div className="heroActions">
-          <a href="#workspace" className="primaryLink">Open pot</a>
-          <a href="#proof" className="secondaryLink">View WDK proof</a>
-        </div>
-      </section>
-
-      <section className="metrics">
-        <div className="metric">
-          <Wallet />
-          <span>WDK wallet manager</span>
-          <strong>{wdk.walletReady ? 'Ready' : 'Starting'}</strong>
-        </div>
-        <div className="metric">
-          <Users />
-          <span>Fans in pot</span>
-          <strong>{participants.length}</strong>
-        </div>
-        <div className="metric">
-          <Ticket />
-          <span>Each fan pays</span>
-          <strong>{currency(share)}</strong>
-        </div>
-        <div className="metric">
-          <Shield />
-          <span>Custody</span>
-          <strong>Self-custody</strong>
-        </div>
-      </section>
-
-      <section className="workspace" id="workspace">
-        <div className="panel setupPanel">
-          <div className="panelHeader">
-            <span>01</span>
-            <h2>Create match pot</h2>
+      <section className="hero" id="top">
+        <div className="heroCopy">
+          <p className="kicker">USDT pots for match days</p>
+          <h1>One calm place to split football costs.</h1>
+          <p className="lede">
+            Create a pot for tickets, food, transport or jerseys. Share one USDT request per fan.
+            Track settlement without chasing people in group chats.
+          </p>
+          <div className="heroActions">
+            <a href="#pot" className="button dark">Open a pot</a>
+            <a href="#how" className="button light">See how it works</a>
           </div>
-          <label>
-            Match
-            <input value={match} onChange={(e) => setMatch(e.target.value)} />
-          </label>
-          <label>
-            Group
-            <input value={venue} onChange={(e) => setVenue(e.target.value)} />
-          </label>
-          <label>
-            Total cost in USDT
-            <input
-              type="number"
-              min="1"
-              value={total}
-              onChange={(e) => setTotal(Number(e.target.value || 0))}
-            />
-          </label>
-          <div className="costCard">
-            <span>Split across {participants.length} fans</span>
+        </div>
+        <aside className="phoneCard" aria-label="MatchPot preview">
+          <div className="phoneTop">
+            <span>{match}</span>
+            <strong>{currency(total)}</strong>
+          </div>
+          <div className="phoneSplit">
+            <span>Each fan pays</span>
             <strong>{currency(share)}</strong>
           </div>
-        </div>
-
-        <div className="panel payPanel">
-          <div className="panelHeader">
-            <span>02</span>
-            <h2>Send payment request</h2>
-          </div>
-          <div className="fanSelect">
-            {participants.map((p, i) => (
-              <button key={p.wallet} className={selected === i ? 'active' : ''} onClick={() => setSelected(i)}>
-                {p.name}
-              </button>
-            ))}
-          </div>
-          <div className="qrCard">{qr && <img src={qr} alt="USDT payment QR code" />}</div>
-          <div className="requestLine">
-            <span>{selectedParticipant.name}</span>
-            <code>{short(selectedParticipant.wallet)}</code>
-            <strong>{currency(share)} USDT</strong>
-          </div>
-          <button className="primaryButton" onClick={copyRequest}><Copy size={16} /> {copied ? 'Copied' : 'Copy request'}</button>
-        </div>
-
-        <div className="panel settlePanel">
-          <div className="panelHeader">
-            <span>03</span>
-            <h2>Track settlement</h2>
-          </div>
-          <div className="settleList">
-            {participants.map((p, i) => (
-              <button key={p.wallet} className={`settleRow ${p.paid ? 'paid' : ''}`} onClick={() => togglePaid(i)}>
+          <div className="miniList">
+            {participants.slice(0, 4).map((p) => (
+              <div key={p.wallet}>
                 <span>{p.name}</span>
-                <code>{short(p.wallet)}</code>
-                <strong>{p.paid ? 'Paid' : currency(share)}</strong>
-              </button>
+                <b>{p.paid ? 'Settled' : 'Waiting'}</b>
+              </div>
             ))}
           </div>
-          <div className="progress"><div style={{ width: `${(paidTotal / total) * 100}%` }} /></div>
-          <p className="settleSummary">{paidCount} of {participants.length} paid. {currency(paidTotal)} collected.</p>
+        </aside>
+      </section>
+
+      <section className="logos" aria-label="Product values">
+        <span>Watch parties</span>
+        <span>Team dues</span>
+        <span>Tickets</span>
+        <span>Transport</span>
+        <span>Merch</span>
+      </section>
+
+      <section className="how" id="how">
+        <div>
+          <p className="kicker">How it works</p>
+          <h2>Built for the actual messy match-day payment moment.</h2>
+        </div>
+        <div className="steps">
+          <article>
+            <span>01</span>
+            <h3>Create the pot</h3>
+            <p>Add the match, group and total amount. MatchPot calculates everyone’s share.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Share USDT requests</h3>
+            <p>Each fan gets a clean payment URI and QR code for their own contribution.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Close the tab</h3>
+            <p>Mark who has paid and see the total collected before the game ends.</p>
+          </article>
         </div>
       </section>
 
-      <section className="proofPanel" id="proof">
+      <section className="product" id="pot">
+        <div className="sectionHead">
+          <p className="kicker">Live flow</p>
+          <h2>Try the pot the way a fan group would use it.</h2>
+        </div>
+
+        <div className="workspace">
+          <section className="panel setupPanel">
+            <div className="panelTitle">
+              <span>1</span>
+              <h3>Create pot</h3>
+            </div>
+            <label>
+              Match
+              <input value={match} onChange={(e) => setMatch(e.target.value)} />
+            </label>
+            <label>
+              Group
+              <input value={venue} onChange={(e) => setVenue(e.target.value)} />
+            </label>
+            <label>
+              Total cost in USDT
+              <input type="number" min="1" value={total} onChange={(e) => setTotal(Number(e.target.value || 0))} />
+            </label>
+            <div className="splitCard">
+              <span>{participants.length} fans</span>
+              <strong>{currency(share)} each</strong>
+            </div>
+          </section>
+
+          <section className="panel requestPanel">
+            <div className="panelTitle">
+              <span>2</span>
+              <h3>Payment request</h3>
+            </div>
+            <div className="fanTabs">
+              {participants.map((p, i) => (
+                <button key={p.wallet} className={selected === i ? 'selected' : ''} onClick={() => setSelected(i)}>
+                  {p.name}
+                </button>
+              ))}
+            </div>
+            <div className="qrWrap">{qr && <img src={qr} alt="USDT payment QR code" />}</div>
+            <div className="requestMeta">
+              <span>{selectedParticipant.name}</span>
+              <code>{short(selectedParticipant.wallet)}</code>
+              <strong>{currency(share)} USDT</strong>
+            </div>
+            <button className="copyButton" onClick={copyRequest}><Copy size={16} /> {copied ? 'Copied' : 'Copy payment request'}</button>
+          </section>
+
+          <section className="panel settlementPanel">
+            <div className="panelTitle">
+              <span>3</span>
+              <h3>Settlement</h3>
+            </div>
+            <div className="settlementList">
+              {participants.map((p, i) => (
+                <button key={p.wallet} className={p.paid ? 'paid' : ''} onClick={() => togglePaid(i)}>
+                  <span>{p.name}</span>
+                  <code>{short(p.wallet)}</code>
+                  <strong>{p.paid ? 'Paid' : currency(share)}</strong>
+                </button>
+              ))}
+            </div>
+            <div className="progressTrack"><div style={{ width: `${(paidTotal / total) * 100}%` }} /></div>
+            <p>{paidCount} of {participants.length} paid. {currency(paidTotal)} collected.</p>
+          </section>
+        </div>
+      </section>
+
+      <section className="proof">
         <div>
-          <div className="eyebrow">WDK integration</div>
-          <h2>Local wallet primitive, not a custodial checkout</h2>
+          <p className="kicker">WDK proof</p>
+          <h2>Self-custody first, without making the user feel crypto-native.</h2>
           <p>
-            MatchPot uses Tether WDK in the browser to create and validate a local seed and initialize a WDK instance.
-            A repo script also proves EVM wallet manager registration and address derivation for the live wallet layer.
+            MatchPot uses Tether WDK in the browser for local seed generation, validation and WDK initialization.
+            The repository includes an EVM wallet manager proof script for address derivation.
           </p>
         </div>
-        <div className="proofGrid">
-          <div><Check /><span>Seed valid</span><strong>{wdk.validSeed ? 'Yes' : 'Pending'}</strong></div>
-          <div><Zap /><span>Chain module</span><strong>{wdk.chain}</strong></div>
-          <div><Wallet /><span>CLI address proof</span><strong>{wdk.address ? short(wdk.address) : 'Script included'}</strong></div>
+        <div className="proofCards">
+          <article><Wallet /><span>WDK runtime</span><strong>{wdk.walletReady ? 'Ready' : 'Starting'}</strong></article>
+          <article><Shield /><span>Seed valid</span><strong>{wdk.validSeed ? 'Yes' : 'Pending'}</strong></article>
+          <article><Ticket /><span>Payment asset</span><strong>USDT</strong></article>
+          <article><Users /><span>Wallet layer</span><strong>{wdk.chain}</strong></article>
         </div>
       </section>
+
+      <footer>
+        <span>MatchPot</span>
+        <a href="https://github.com/mystiquemide/matchpot" target="_blank">Source code</a>
+        <span>Apache 2.0</span>
+      </footer>
     </main>
   )
 }
