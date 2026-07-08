@@ -8,10 +8,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "wdk:address": "node scripts/wdk-address-proof.mjs"
   },
   "dependencies": {
     "@tetherto/wdk": "^1.0.0-beta.14",
+    "@tetherto/wdk-wallet-evm": "^1.0.0-beta.14",
     "buffer": "^6.0.3",
     "lucide-react": "^1.23.0",
     "qrcode": "^1.5.4",

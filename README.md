@@ -26,10 +26,15 @@ MatchPot uses Tether WDK as the wallet primitive:
 
 - Generates a local BIP-39 seed with `WDK.getRandomSeedPhrase(12)`.
 - Validates the seed with `WDK.isValidSeed()`.
-- Initializes a local `WDK` instance to prove self-custodial wallet setup.
-- Keeps the wallet primitive local and does not use a custodian or cloud wallet.
+- Initializes a local `WDK` instance in the browser.
+- Includes `@tetherto/wdk-wallet-evm` for the wallet-manager layer.
+- Provides `npm run wdk:address` to prove EVM wallet manager registration and account address derivation from a local seed.
 
-The current MVP is intentionally safe for judges to run without private keys, RPC secrets, or funded wallets. The next step is registering a chain-specific wallet manager through `WDK.registerWallet()` once the target Tether-supported network and wallet adapter are chosen.
+The current MVP is intentionally safe for judges to run without private keys, RPC secrets, or funded wallets. It generates USDT payment requests and settlement tracking. Live USDT transaction broadcast is the next integration step after choosing the target testnet and funding a test account.
+
+```bash
+npm run wdk:address
+```
 
 ## Run locally
 
@@ -51,4 +56,4 @@ Nigeria fans are watching a tournament match together. One person pays for food,
 
 ## Submission disclosure
 
-This build uses `@tetherto/wdk` for local self-custodial wallet seed generation, validation, and WDK instance initialization. The payment request flow is designed for USDT/WDK wallet send flows. No cloud AI APIs, custodian wallets, or unrelated sponsor-name decoration are used.
+This build uses `@tetherto/wdk` for local self-custodial wallet seed generation, validation, and WDK instance initialization. It also includes an EVM wallet-manager proof script with `@tetherto/wdk-wallet-evm`. The payment request flow is designed for USDT/WDK wallet send flows. No cloud AI APIs, custodian wallets, or unrelated sponsor-name decoration are used.
