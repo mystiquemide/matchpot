@@ -1,0 +1,55 @@
+:root {
+  color: #e7efe7;
+  background: #06120d;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background:
+  radial-gradient(circle at top left, rgba(20, 184, 166, .22), transparent 32rem),
+  radial-gradient(circle at bottom right, rgba(34, 197, 94, .15), transparent 30rem),
+  #06120d;
+}
+button, input { font: inherit; }
+main { width: min(1180px, calc(100vw - 32px)); margin: 0 auto; padding: 42px 0; }
+.hero { padding: 36px 0 26px; }
+.badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(125, 240, 190, .25); color: #9ff5c5; border-radius: 999px; padding: 8px 12px; background: rgba(8, 35, 23, .72); }
+h1 { font-size: clamp(56px, 11vw, 132px); line-height: .82; margin: 30px 0 16px; letter-spacing: -0.08em; color: #f3fff7 !important; font-weight: 900; text-shadow: 0 12px 60px rgba(117,247,168,.12); }
+h2 { margin: 0 0 18px; font-size: 22px; color: #eafff1 !important; font-weight: 850; }
+.lede { font-size: clamp(19px, 2.4vw, 30px); color: #bbd3c4; max-width: 980px; line-height: 1.2; }
+.heroGrid, .workspace { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.workspace { align-items: start; margin-top: 12px; }
+.card { background: rgba(9, 27, 18, .78); border: 1px solid rgba(178, 255, 210, .14); border-radius: 28px; padding: 22px; box-shadow: 0 24px 80px rgba(0,0,0,.35); backdrop-filter: blur(12px); }
+.stat { display: grid; gap: 10px; min-height: 130px; }
+.stat svg { color: #63f3a5; }
+.stat span { color: #9fb7a8; }
+.stat strong { font-size: 28px; }
+label { display: grid; gap: 8px; color: #9fb7a8; margin-bottom: 14px; }
+input { width: 100%; border: 1px solid rgba(178,255,210,.18); border-radius: 16px; padding: 14px 15px; background: #07150f; color: #f5fff8; outline: none; }
+input:focus { border-color: #62eda4; }
+.splitBox { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 20px 0 10px; padding: 18px; border-radius: 20px; background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(34,197,94,.12)); }
+.splitBox span { color: #9fb7a8; }
+.splitBox strong { font-size: 38px; }
+.tiny { color: #8da796; font-size: 14px; line-height: 1.45; }
+.fanSelect { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.fanSelect button { border: 1px solid rgba(178,255,210,.12); border-radius: 999px; padding: 8px 12px; color: #cbe6d2; background: rgba(255,255,255,.04); cursor: pointer; }
+.fanSelect .active { color: #06120d; background: #75f7a8; }
+.qrWrap { display: grid; place-items: center; background: #fff; border-radius: 22px; padding: 18px; min-height: 276px; }
+.qrWrap img { width: 240px; height: 240px; }
+.uri { margin: 14px 0; color: #a7b9ad; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; text-align: center; }
+.primary { width: 100%; border: 0; border-radius: 16px; padding: 14px 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #041009; background: #75f7a8; font-weight: 800; cursor: pointer; }
+.row { width: 100%; display: grid; grid-template-columns: 1fr 1.4fr auto; align-items: center; gap: 10px; border: 1px solid rgba(178,255,210,.1); border-radius: 16px; margin: 8px 0; padding: 12px; background: rgba(255,255,255,.035); color: #dcefe1; cursor: pointer; text-align: left; }
+.row code { color: #879d8d; font-size: 12px; overflow: hidden; }
+.row strong { justify-self: end; }
+.row.paid { background: rgba(34,197,94,.16); border-color: rgba(117,247,168,.25); }
+.row.paid strong { color: #75f7a8; }
+.progress { overflow: hidden; height: 12px; border-radius: 999px; background: rgba(255,255,255,.08); margin: 18px 0 8px; }
+.progress div { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22c55e, #99f6e4); }
+.proof { margin-top: 16px; }
+ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+li { display: flex; gap: 10px; align-items: flex-start; color: #c6ddce; }
+li svg { color: #75f7a8; flex: 0 0 auto; }
+code { color: #b6fed0; }
+details { margin-top: 18px; color: #9fb7a8; }
+summary { cursor: pointer; color: #e7efe7; font-weight: 700; }
+@media (max-width: 920px) { .heroGrid, .workspace { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } .row strong { justify-self: start; } }
