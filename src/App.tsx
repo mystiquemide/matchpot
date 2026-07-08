@@ -94,6 +94,24 @@ function LandingPage() {
         <span>Merch</span>
       </section>
 
+      <section className="editorialProof" aria-label="MatchPot proof cards">
+        <article>
+          <span>01 / SPLIT</span>
+          <strong>$72 → $12</strong>
+          <p>Six fans, one pot, no spreadsheet.</p>
+        </article>
+        <article>
+          <span>02 / REQUEST</span>
+          <strong>USDT URI</strong>
+          <p>Each person gets their own payment request.</p>
+        </article>
+        <article>
+          <span>03 / CLOSE</span>
+          <strong>2 / 6 Paid</strong>
+          <p>Track settlement before the final whistle.</p>
+        </article>
+      </section>
+
       <section className="how" id="how">
         <div>
           <p className="kicker">How it works</p>
